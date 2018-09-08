@@ -25,14 +25,14 @@ var chartGroup = svg.append("g")
 d3.csv("../data/data.csv", function(err, healthData) {
   if (err) throw err;
 
-  // Step 1: Parse Data/Cast as numbers
+  // Parse Data/Cast as numbers
   // ==============================
   healthData.forEach(function(data) {
     data.income = +data.income;
     data.healthcare = +data.healthcare;
   });
 
-  // Step 2: Create scale functions
+  // Create scale functions
   // ==============================
   var xLinearScale = d3.scaleLinear()
     .domain([35000, d3.max(healthData, d => d.income)])
@@ -42,12 +42,12 @@ d3.csv("../data/data.csv", function(err, healthData) {
     .domain([0, d3.max(healthData, d => d.healthcare)])
     .range([height, 0]);
 
-  // Step 3: Create axis functions
+  // Create axis functions
   // ==============================
   var xAxis = d3.axisBottom(xLinearScale);
   var yAxis = d3.axisLeft(yLinearScale)
 
-  // Step 5: Create Circles
+  // Create Circles
   // ==============================
   chartGroup.selectAll("circle")
       .data(healthData)
@@ -58,6 +58,8 @@ d3.csv("../data/data.csv", function(err, healthData) {
       .attr("r", "15")
       .attr("class", "stateCircle")
 
+// Add Labels
+// ==============================
   chartGroup.selectAll("text")
     .data(healthData)
     .enter()
@@ -69,7 +71,7 @@ d3.csv("../data/data.csv", function(err, healthData) {
     .attr("text-anchor", "middle")
     .attr("class","stateText")
 
-  // Step 4: Append Axes to the chart
+  // Append Axes to the chart
   // ==============================
   chartGroup.append("g")
       .attr("transform", `translate(0, ${height})`)
